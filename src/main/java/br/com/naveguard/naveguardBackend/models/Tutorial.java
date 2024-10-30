@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "tutorial")
+@Table(name = "tb_tutorial")
 
 public class Tutorial {
     @Id
@@ -24,7 +24,7 @@ public class Tutorial {
 
     public Tutorial(Long id, String title, String content) {
         this.id = id;
-        title = title;
-        content = content;
+        this.title = title;
+        this.content = content;
     }
 }

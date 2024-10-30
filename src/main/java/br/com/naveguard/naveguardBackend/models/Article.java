@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity(name="article")
+@Entity(name="tb_article")
 
 public class Article {
     @Id

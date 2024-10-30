@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "media")
+@Table(name = "tb_media")
 
 public class Media {
     @Id
