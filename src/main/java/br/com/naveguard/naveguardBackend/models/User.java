@@ -1,7 +1,9 @@
 package br.com.naveguard.naveguardBackend.models;
 import br.com.naveguard.naveguardBackend.models.enums.Gender;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,6 +18,8 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name= "tb_user")
+@AllArgsConstructor
+@NoArgsConstructor
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,20 +36,6 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "author")
     private List<Tutorial> tutorials = new ArrayList<>();
 
-
-    public User() {
-    }
-
-    public User(Long id, String name, String email, String password, LocalDate birth_day, String urlPhoto, Gender gender, String bio) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.birth_day = birth_day;
-        this.urlPhoto = urlPhoto;
-        this.gender = gender;
-        this.bio = bio;
-    }
 
     @Override
     public String getUsername() {
