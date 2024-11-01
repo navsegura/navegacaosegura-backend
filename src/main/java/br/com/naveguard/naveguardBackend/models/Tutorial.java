@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -23,4 +26,9 @@ public class Tutorial {
     @JoinColumn(name = "author_id")
     private User author;
 
+    @ManyToMany
+    @JoinTable(name = "tb_tutorial_media",
+            joinColumns = @JoinColumn(name = "tutorial_id"),
+            inverseJoinColumns = @JoinColumn(name = "media_id"))
+    private Set<Media> medias = new HashSet<>();
 }

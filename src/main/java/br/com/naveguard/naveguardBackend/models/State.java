@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -18,5 +21,10 @@ public class State {
     private Long id;
     private String name;
 
+    @OneToMany(mappedBy = "state")
+    private List<City> cities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "state")
+    private List<User> users = new ArrayList<>();
 }
 

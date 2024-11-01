@@ -1,8 +1,7 @@
 package br.com.naveguard.naveguardBackend.models;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import br.com.naveguard.naveguardBackend.dtos.ArticleDTO;
+import br.com.naveguard.naveguardBackend.dtos.UserMinDTO;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,4 +20,15 @@ public class Article {
     private String title;
     private String content;
     private String urlPhoto;
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private User author;
+
+    public Article(ArticleDTO article) {
+        this.id = article.id();
+        this.title = article.title();
+        this.content = article.content();
+        this.urlPhoto = article.urlPhoto();
+        this.author = new User(article.author());
+    }
 }

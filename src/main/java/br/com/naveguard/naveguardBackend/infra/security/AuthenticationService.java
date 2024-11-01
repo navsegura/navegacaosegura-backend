@@ -2,19 +2,10 @@ package br.com.naveguard.naveguardBackend.infra.security;
 
 import br.com.naveguard.naveguardBackend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthenticationService implements UserDetailsService {
+public class AuthenticationService {
 
-    @Autowired
-    private UserRepository repository;
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return repository.findByEmail(username).get();
-    }
 }

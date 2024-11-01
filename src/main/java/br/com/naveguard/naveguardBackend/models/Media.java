@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -17,5 +20,8 @@ public class Media {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String url;
+
+    @ManyToMany(mappedBy = "medias")
+    private Set<Tutorial> tutorials = new HashSet<>();
 
 }

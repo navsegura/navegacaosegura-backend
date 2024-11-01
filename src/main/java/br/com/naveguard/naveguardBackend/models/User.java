@@ -1,18 +1,14 @@
 package br.com.naveguard.naveguardBackend.models;
+import br.com.naveguard.naveguardBackend.dtos.UserMinDTO;
 import br.com.naveguard.naveguardBackend.models.enums.Gender;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Getter
 @Setter
@@ -20,56 +16,92 @@ import java.util.List;
 @Table(name= "tb_user")
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements UserDetails {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String email;
     private String password;
-    private LocalDate birth_day;
+    private LocalDate birthDay;
     private String urlPhoto;
     @Enumerated(EnumType.STRING)
     private Gender gender;
     private String bio;
 
+    @ManyToMany
+    @JoinTable(name = "tb_tutorial_media",
+            joinColumns = @JoinColumn(name = "tutorial_id"),
+            inverseJoinColumns = @JoinColumn(name = "media_id"))
+    private Set<Media> medias = new HashSet<>();
     @OneToMany(mappedBy = "author")
     private List<Tutorial> tutorials = new ArrayList<>();
 
+    @OneToMany(mappedBy = "author")
+    private List<Article> articles = new ArrayList<>();
 
-    @Override
-    public String getUsername() {
-        return email;
-    }
+    @ManyToOne
+    @JoinColumn(name = "state_id")
+    private State state;
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
+    @ManyToMany
+    @JoinTable(name = "tb_user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
-    }
+    @ManyToMany
+    @JoinTable(name = "tb_parent_kid",
+            joinColumns = @JoinColumn(name = "parent_id"),
+            inverseJoinColumns = @JoinColumn(name = "kid_id"))
+    private Set<User> kids = new HashSet<>();
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
-    }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
-    }
 
-    @Override
-    public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+    public User(UserMinDTO dto) {
+        this.id = dto.id();
+        this.name = dto.name();
+        this.email = dto.email();
+        password = null;
+        this.birthDay = dto.birthDay();
+        this.urlPhoto = dto.urlPhoto();
+        this.gender = dto.gender();
+        this.bio = dto.bio();
+        this.tutorials = tutorials;
     }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-    }
+    //    @Override
+//    public String getUsername() {
+//        return email;
+//    }
+//
+//    @Override
+//    public String getPassword() {
+//        return password;
+//    }
+//
+//    @Override
+//    public boolean isAccountNonExpired() {
+//        return UserDetails.super.isAccountNonExpired();
+//    }
+//
+//    @Override
+//    public boolean isAccountNonLocked() {
+//        return UserDetails.super.isAccountNonLocked();
+//    }
+//
+//    @Override
+//    public boolean isCredentialsNonExpired() {
+//        return UserDetails.super.isCredentialsNonExpired();
+//    }
+//
+//    @Override
+//    public boolean isEnabled() {
+//        return UserDetails.super.isEnabled();
+//    }
+//
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+//    }
 
 }
