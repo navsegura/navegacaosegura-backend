@@ -1,14 +1,29 @@
 package br.com.naveguard.naveguardBackend.models;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import br.com.naveguard.naveguardBackend.dtos.UserDTO;
 import br.com.naveguard.naveguardBackend.dtos.UserMinDTO;
 import br.com.naveguard.naveguardBackend.models.enums.Gender;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDate;
-import java.util.*;
 
 @Getter
 @Setter
@@ -67,7 +82,17 @@ public class User {
         this.urlPhoto = dto.urlPhoto();
         this.gender = dto.gender();
         this.bio = dto.bio();
-        this.tutorials = tutorials;
+    }
+    
+    public User(UserDTO dto) {
+    	this.id = dto.id();
+        this.name = dto.name();
+        this.email = dto.email();
+        password = dto.password();
+        this.birthDay = dto.birthDay();
+        this.urlPhoto = dto.urlPhoto();
+        this.gender = dto.gender();
+        this.bio = dto.bio();
     }
     //    @Override
 //    public String getUsername() {

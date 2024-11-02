@@ -1,4 +1,5 @@
 package br.com.naveguard.naveguardBackend.models;
+import br.com.naveguard.naveguardBackend.dtos.CityDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,4 +22,10 @@ public class City {
     @ManyToOne
     @JoinColumn(name = "state_id")
     private State state;
+    
+    public City(CityDTO dto) {
+    	id = dto.id();
+    	name = dto.name();
+    	state = new State(dto.state());
+    }
 }

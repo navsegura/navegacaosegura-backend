@@ -1,5 +1,6 @@
 package br.com.naveguard.naveguardBackend.dtos;
 
+import br.com.naveguard.naveguardBackend.models.Article;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -15,4 +16,8 @@ public record ArticleDTO(
         @NotBlank(message = "O artigo deve ter um autor")
         UserMinDTO author
 ) {
+	public ArticleDTO(Article entity) {
+		this(entity.getId(), entity.getTitle(), entity.getContent(), entity.getUrlPhoto(), 
+				new UserMinDTO(entity.getAuthor()));
+	}
 }

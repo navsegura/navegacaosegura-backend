@@ -1,12 +1,22 @@
 package br.com.naveguard.naveguardBackend.models;
-import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
+import br.com.naveguard.naveguardBackend.dtos.MediaDTO;
+import br.com.naveguard.naveguardBackend.dtos.TutorialDTO;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -31,4 +41,16 @@ public class Tutorial {
             joinColumns = @JoinColumn(name = "tutorial_id"),
             inverseJoinColumns = @JoinColumn(name = "media_id"))
     private Set<Media> medias = new HashSet<>();
+
+	public Tutorial(TutorialDTO dto) {
+		id = dto.id();
+		title = dto.title();
+		content = dto.content();
+		author = new User(dto.author());
+		for(MediaDTO item : dto.medias()) {
+			medias.add(new Media(item));
+		}
+	}
+    
+    
 }
