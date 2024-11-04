@@ -23,19 +23,19 @@ public class ArticleController {
     @GetMapping("/{id}")
     public ArticleDTOResponse getArticleById(@PathVariable Long id) {
         var article = service.findById(id);
-        return new ArticleDTOResponse(article.id(),article.title(),article.content(),article.urlPhoto(),null);
+        return new ArticleDTOResponse(article.id(),article.title(),article.content(),article.urlPhoto(),article.author());
     }
 
     @PostMapping("/new")
     public ArticleDTOResponse newArticle(@RequestBody ArticleDTO dto) {
         var article = service.insert(dto);
-        return new ArticleDTOResponse(article.id(), article.title(), article.content(), article.urlPhoto(), null);
+        return new ArticleDTOResponse(article.id(), article.title(), article.content(), article.urlPhoto(), article.author());
     }
 
     @PutMapping("/update/{id}")
     public ArticleDTOResponse updateArticle(@PathVariable Long id, @RequestBody ArticleDTO dto) {
         var article = service.update(id,dto);
-        return new ArticleDTOResponse(article.id(), article.title(), article.content(), article.urlPhoto(), null);
+        return new ArticleDTOResponse(article.id(), article.title(), article.content(), article.urlPhoto(), article.author());
     }
 
     @DeleteMapping("/delete/{id}")
