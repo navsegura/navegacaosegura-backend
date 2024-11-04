@@ -17,7 +17,7 @@ public record ArticleDTO(
         UserMinDTO author
 ) {
 	public ArticleDTO(Article entity) {
-		this(entity.getId(), entity.getTitle(), entity.getContent(), entity.getUrlPhoto(), 
+		this(entity.getId(), entity.getTitle(), entity.getContent(), entity.getUrlPhoto(),
 				new UserMinDTO(entity.getAuthor()));
 	}
 }

@@ -85,7 +85,6 @@ public class User {
     }
     
     public User(UserDTO dto) {
-    	this.id = dto.id();
         this.name = dto.name();
         this.email = dto.email();
         password = dto.password();

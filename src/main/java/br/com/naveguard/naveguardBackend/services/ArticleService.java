@@ -1,9 +1,8 @@
 package br.com.naveguard.naveguardBackend.services;
 
+import br.com.naveguard.naveguardBackend.dtos.ArticleDTOResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +13,8 @@ import br.com.naveguard.naveguardBackend.repositories.ArticleRepository;
 import br.com.naveguard.naveguardBackend.services.exceptions.DatabaseException;
 import br.com.naveguard.naveguardBackend.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
+
+import java.util.List;
 
 @Service
 public class ArticleService {
@@ -28,9 +29,11 @@ public class ArticleService {
 	}
 
 	@Transactional(readOnly = true)
-	public Page<ArticleDTO> findAllPaged(Pageable pageable) {
-		Page<Article> entity = repository.findAll(pageable);
-		return entity.map(x -> new ArticleDTO(x));
+	public List<ArticleDTOResponse> findAll() {
+		List<Article> entity = repository.findAll();
+		return entity.stream()
+				.map(a -> new ArticleDTOResponse(a.getId(),a.getTitle(),a.getContent(), a.getUrlPhoto(),null))
+				.toList();
 	}
 
 	@Transactional
@@ -72,7 +75,6 @@ public class ArticleService {
 	}
 	
 	public Article dtoToEntity(ArticleDTO dto) {
-		Article entity = new Article(dto);
-		return entity;
+        return new Article(dto);
 	}
 }

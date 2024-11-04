@@ -11,7 +11,6 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 public record UserDTO(
-        Long id,
         @NotBlank(message = "O nome não pode ser vazio")
         @Size(min = 3, max = 50, message = "O nome tem que ter entre 3 e 50 caracteres")
         String name,
