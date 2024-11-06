@@ -3,6 +3,7 @@ package br.com.naveguard.naveguardBackend.controllers;
 import br.com.naveguard.naveguardBackend.dtos.ArticleDTO;
 import br.com.naveguard.naveguardBackend.dtos.ArticleDTOResponse;
 import br.com.naveguard.naveguardBackend.services.ArticleService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,13 +28,13 @@ public class ArticleController {
     }
 
     @PostMapping("/new")
-    public ArticleDTOResponse newArticle(@RequestBody ArticleDTO dto) {
+    public ArticleDTOResponse newArticle(@RequestBody @Valid ArticleDTO dto) {
         var article = service.insert(dto);
         return new ArticleDTOResponse(article.id(), article.title(), article.content(), article.urlPhoto(), article.author());
     }
 
     @PutMapping("/update/{id}")
-    public ArticleDTOResponse updateArticle(@PathVariable Long id, @RequestBody ArticleDTO dto) {
+    public ArticleDTOResponse updateArticle(@PathVariable Long id, @Valid @RequestBody ArticleDTO dto) {
         var article = service.update(id,dto);
         return new ArticleDTOResponse(article.id(), article.title(), article.content(), article.urlPhoto(), article.author());
     }
