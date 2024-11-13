@@ -16,6 +16,8 @@ import br.com.naveguard.naveguardBackend.services.exceptions.DatabaseException;
 import br.com.naveguard.naveguardBackend.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 
+import java.util.List;
+
 @Service
 public class UserService {
 	@Autowired
@@ -29,9 +31,12 @@ public class UserService {
 	}
 
 	@Transactional(readOnly = true)
-	public Page<UserMinDTO> findAllPaged(Pageable pageable) {
-		Page<User> entity = repository.findAll(pageable);
-		return entity.map(x -> new UserMinDTO(x));
+	public List<UserMinDTO> findAll() {
+		List<User> allUserList = repository.findAll();
+		List<UserMinDTO> allUserListDTO= allUserList.stream()
+				.map(u -> new UserMinDTO(u))
+				.toList();
+		return allUserListDTO;
 	}
 
 	@Transactional
