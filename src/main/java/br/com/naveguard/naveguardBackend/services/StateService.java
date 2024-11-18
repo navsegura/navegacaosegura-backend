@@ -1,9 +1,9 @@
 package br.com.naveguard.naveguardBackend.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,18 +24,19 @@ public class StateService {
 	public StateDTO findById(Long id) {
 		State entity = repository.findById(id).orElseThrow(
 				() -> new ResourceNotFoundException("Recurso não encontrado"));
-		return new StateDTO(entity);
+		StateDTO dto = new StateDTO(entity);
+		return dto;
 	}
 
 	@Transactional(readOnly = true)
-	public Page<StateDTO> findAllPaged(Pageable pageable) {
-		Page<State> entity = repository.findAll(pageable);
-		return entity.map(x -> new StateDTO(x));
+	public List<StateDTO> findAll() {
+		List<State> entity = repository.findAll();
+		return entity.stream().map(x -> new StateDTO(x)).toList();
 	}
 
 	@Transactional
 	public StateDTO insert(StateDTO dto) {
-		State entity = dtoToEntity(dto);
+		State entity = new State(dto);
 		entity.setId(null);
 		entity = repository.save(entity);
 		return new StateDTO(entity);
@@ -45,8 +46,8 @@ public class StateService {
 	public StateDTO update(Long id, StateDTO dto) {
 		try {
 			State entity = repository.getReferenceById(id);
-			entity = dtoToEntity(dto);
-			entity = repository.save(entity);
+			entity = dtoToEntity(dto, entity);
+			repository.save(entity);
 			return new StateDTO(entity);
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Recurso não encontrado");
@@ -71,8 +72,8 @@ public class StateService {
 		
 	}
 	
-	public State dtoToEntity(StateDTO dto) {
-		State entity = new State(dto);
+	public State dtoToEntity(StateDTO dto, State entity) {
+		entity.setName(dto.getName());
 		return entity;
 	}
 }

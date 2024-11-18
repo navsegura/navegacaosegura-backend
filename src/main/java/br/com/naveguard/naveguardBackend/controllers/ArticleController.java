@@ -9,7 +9,9 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -22,35 +24,37 @@ public class ArticleController {
 
     @GetMapping
     @Operation(summary = "Listar", description = "Lista todos os artigos registrados.")
-    public List<ArticleDTOResponse> getArticles() {
-
-        return service.findAll();
+    public ResponseEntity<List<ArticleDTOResponse>> getArticles() {
+    	var article = service.findAll();
+        return ResponseEntity.ok().body(article);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Detalhar", description = "Retorna artigo com id especificado.")
-    public ArticleDTOResponse getArticleById(@PathVariable Long id) {
+    public ResponseEntity<ArticleDTOResponse> getArticleById(@PathVariable Long id) {
         var article = service.findById(id);
-        return new ArticleDTOResponse(article.id(),article.title(),article.content(),article.urlPhoto(),article.author());
+        return ResponseEntity.ok().body(article);
     }
 
-    @PostMapping("/new")
+    @PostMapping
     @Operation(summary = "Inserir", description = "Insere um artigo.")
-    public ArticleDTOResponse newArticle(@RequestBody @Valid ArticleDTO dto) {
+    public ResponseEntity<ArticleDTOResponse> newArticle(@Valid @RequestBody ArticleDTO dto) {
         var article = service.insert(dto);
-        return new ArticleDTOResponse(article.id(), article.title(), article.content(), article.urlPhoto(), article.author());
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(article.id()).toUri();
+        return ResponseEntity.created(uri).body(article);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     @Operation(summary = "Editar", description = "Edita artigo com id especificado.")
-    public ArticleDTOResponse updateArticle(@PathVariable Long id, @Valid @RequestBody ArticleDTO dto) {
-        var article = service.update(id,dto);
-        return new ArticleDTOResponse(article.id(), article.title(), article.content(), article.urlPhoto(), article.author());
+    public ResponseEntity<ArticleDTOResponse> updateArticle(@PathVariable Long id, @Valid @RequestBody ArticleDTO dto) {
+        var article = service.update(id, dto);
+        return ResponseEntity.ok().body(article);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @Operation(summary = "Excluir", description = "Exclui artigo com id especificado.")
-    public ResponseEntity<ArticleDTOResponse> deleteArticleById(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteArticleById(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }

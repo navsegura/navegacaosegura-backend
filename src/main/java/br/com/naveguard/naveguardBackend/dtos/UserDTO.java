@@ -1,14 +1,12 @@
 package br.com.naveguard.naveguardBackend.dtos;
 
+import java.time.LocalDate;
+
 import br.com.naveguard.naveguardBackend.models.enums.Gender;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
-
-import java.time.LocalDate;
 
 public record UserDTO(
         @NotBlank(message = "O nome não pode ser vazio")
@@ -20,6 +18,7 @@ public record UserDTO(
         @NotBlank(message = "O campo de senha não pode ser vazio")
         @Size(min = 8, message = "A senha precisa ter no mínimo 8 caracteres")
         String password,
+        String phone,
         @PastOrPresent(message = "Data de nascimento não pode ser futura")
         LocalDate birthDay,
         String urlPhoto,

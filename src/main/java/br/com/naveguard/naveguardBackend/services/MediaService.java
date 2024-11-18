@@ -1,9 +1,9 @@
 package br.com.naveguard.naveguardBackend.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,14 +28,14 @@ public class MediaService {
 	}
 
 	@Transactional(readOnly = true)
-	public Page<MediaDTO> findAllPaged(Pageable pageable) {
-		Page<Media> entity = repository.findAll(pageable);
-		return entity.map(x -> new MediaDTO(x));
+	public List<MediaDTO> findAll() {
+		List<Media> entity = repository.findAll();
+		return entity.stream().map(x -> new MediaDTO(x)).toList();
 	}
 
 	@Transactional
 	public MediaDTO insert(MediaDTO dto) {
-		Media entity = dtoToEntity(dto);
+		Media entity = new Media(dto);
 		entity.setId(null);
 		entity = repository.save(entity);
 		return new MediaDTO(entity);
@@ -45,7 +45,7 @@ public class MediaService {
 	public MediaDTO update(Long id, MediaDTO dto) {
 		try {
 			Media entity = repository.getReferenceById(id);
-			entity = dtoToEntity(dto);
+			entity = dtoToEntity(dto, entity);
 			entity = repository.save(entity);
 			return new MediaDTO(entity);
 		} catch (EntityNotFoundException e) {
@@ -71,8 +71,8 @@ public class MediaService {
 		
 	}
 	
-	public Media dtoToEntity(MediaDTO dto) {
-		Media entity = new Media(dto);
+	public Media dtoToEntity(MediaDTO dto, Media entity) {
+		entity.setUrl(dto.getUrl());
 		return entity;
 	}
 }

@@ -24,8 +24,7 @@ public class City {
     private State state;
     
     public City(CityDTO dto) {
-    	id = dto.id();
-    	name = dto.name();
-    	state = new State(dto.state());
+    	id = dto.getId();
+    	name = dto.getName();
     }
 }

@@ -4,6 +4,7 @@ import java.util.Set;
 
 import br.com.naveguard.naveguardBackend.dtos.MediaDTO;
 import br.com.naveguard.naveguardBackend.dtos.TutorialDTO;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,6 +31,7 @@ public class Tutorial {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+    @Column(columnDefinition = "text")
     private String content;
 
     @ManyToOne
@@ -43,11 +45,11 @@ public class Tutorial {
     private Set<Media> medias = new HashSet<>();
 
 	public Tutorial(TutorialDTO dto) {
-		id = dto.id();
-		title = dto.title();
-		content = dto.content();
-		author = new User(dto.author());
-		for(MediaDTO item : dto.medias()) {
+		id = dto.getId();
+		title = dto.getTitle();
+		content = dto.getContent();
+		author = new User(dto.getAuthor());
+		for(MediaDTO item : dto.getMedias()) {
 			medias.add(new Media(item));
 		}
 	}

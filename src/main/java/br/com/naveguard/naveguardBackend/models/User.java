@@ -38,17 +38,13 @@ public class User {
     private String name;
     private String email;
     private String password;
+    private String phone;
     private LocalDate birthDay;
     private String urlPhoto;
     @Enumerated(EnumType.STRING)
     private Gender gender;
     private String bio;
 
-    @ManyToMany
-    @JoinTable(name = "tb_tutorial_media",
-            joinColumns = @JoinColumn(name = "tutorial_id"),
-            inverseJoinColumns = @JoinColumn(name = "media_id"))
-    private Set<Media> medias = new HashSet<>();
     @OneToMany(mappedBy = "author")
     private List<Tutorial> tutorials = new ArrayList<>();
 
@@ -65,13 +61,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "tb_parent_kid",
-            joinColumns = @JoinColumn(name = "parent_id"),
-            inverseJoinColumns = @JoinColumn(name = "kid_id"))
-    private Set<User> kids = new HashSet<>();
-
-
 
     public User(UserMinDTO dto) {
         this.id = dto.id();
@@ -87,8 +76,9 @@ public class User {
     public User(UserDTO dto) {
         this.name = dto.name();
         this.email = dto.email();
-        password = dto.password();
+        this.password = dto.password();
         this.birthDay = dto.birthDay();
+        this.phone = dto.phone();
         this.urlPhoto = dto.urlPhoto();
         this.gender = dto.gender();
         this.bio = dto.bio();

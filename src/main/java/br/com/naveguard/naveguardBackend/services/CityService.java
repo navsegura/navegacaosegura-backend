@@ -1,16 +1,18 @@
 package br.com.naveguard.naveguardBackend.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.naveguard.naveguardBackend.dtos.CityDTO;
 import br.com.naveguard.naveguardBackend.models.City;
+import br.com.naveguard.naveguardBackend.models.State;
 import br.com.naveguard.naveguardBackend.repositories.CityRepository;
+import br.com.naveguard.naveguardBackend.repositories.StateRepository;
 import br.com.naveguard.naveguardBackend.services.exceptions.DatabaseException;
 import br.com.naveguard.naveguardBackend.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,6 +21,9 @@ import jakarta.persistence.EntityNotFoundException;
 public class CityService {
 	@Autowired
 	private CityRepository repository;
+	
+	@Autowired 
+	private StateRepository stateRepository;
 
 	@Transactional(readOnly = true)
 	public CityDTO findById(Long id) {
@@ -28,24 +33,27 @@ public class CityService {
 	}
 
 	@Transactional(readOnly = true)
-	public Page<CityDTO> findAllPaged(Pageable pageable) {
-		Page<City> entity = repository.findAll(pageable);
-		return entity.map(x -> new CityDTO(x));
+	public List<CityDTO> findAll() {
+		List<City> entity = repository.findAll();
+		return entity.stream().map(x -> new CityDTO(x)).toList();
 	}
 
 	@Transactional
 	public CityDTO insert(CityDTO dto) {
-		City entity = dtoToEntity(dto);
+		City entity = new City(dto);
+		State state = stateRepository.findByName(dto.getState());
+		entity.setState(state);
 		entity.setId(null);
 		entity = repository.save(entity);
 		return new CityDTO(entity);
+		
 	}
 
 	@Transactional
 	public CityDTO update(Long id, CityDTO dto) {
 		try {
 			City entity = repository.getReferenceById(id);
-			entity = dtoToEntity(dto);
+			entity = dtoToEntity(dto, entity);
 			entity = repository.save(entity);
 			return new CityDTO(entity);
 		} catch (EntityNotFoundException e) {
@@ -71,8 +79,8 @@ public class CityService {
 		
 	}
 	
-	public City dtoToEntity(CityDTO dto) {
-		City entity = new City(dto);
+	public City dtoToEntity(CityDTO dto, City entity) {
+		entity.setName(dto.getName());
 		return entity;
 	}
 }

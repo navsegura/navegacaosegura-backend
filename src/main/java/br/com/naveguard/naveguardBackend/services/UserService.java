@@ -1,9 +1,9 @@
 package br.com.naveguard.naveguardBackend.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +15,6 @@ import br.com.naveguard.naveguardBackend.repositories.UserRepository;
 import br.com.naveguard.naveguardBackend.services.exceptions.DatabaseException;
 import br.com.naveguard.naveguardBackend.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
-
-import java.util.List;
 
 @Service
 public class UserService {
@@ -41,7 +39,7 @@ public class UserService {
 
 	@Transactional
 	public UserMinDTO insert(UserDTO dto) {
-		User entity = dtoToEntity(dto);
+		User entity = new User(dto);
 		entity.setId(null);
 		entity = repository.save(entity);
 		return new UserMinDTO(entity);
@@ -51,7 +49,7 @@ public class UserService {
 	public UserMinDTO update(Long id, UserDTO dto) {
 		try {
 			User entity = repository.getReferenceById(id);
-			entity = dtoToEntity(dto);
+			entity = dtoToEntity(dto, entity);
 			entity = repository.save(entity);
 			return new UserMinDTO(entity);
 		} catch (EntityNotFoundException e) {
@@ -77,8 +75,15 @@ public class UserService {
 		
 	}
 	
-	public User dtoToEntity(UserDTO dto) {
-		User entity = new User(dto);
+	public User dtoToEntity(UserDTO dto, User entity) {
+		entity.setName(dto.name());
+		entity.setEmail(dto.email());
+		entity.setPassword(dto.password());
+		entity.setPhone(dto.phone());
+		entity.setBirthDay(dto.birthDay());
+		entity.setUrlPhoto(dto.urlPhoto());
+		entity.setGender(dto.gender());
+		entity.setBio(dto.bio());
 		return entity;
 	}
 }

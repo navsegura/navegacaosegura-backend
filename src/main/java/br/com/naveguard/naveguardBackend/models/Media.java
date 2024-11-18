@@ -1,10 +1,8 @@
 package br.com.naveguard.naveguardBackend.models;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import br.com.naveguard.naveguardBackend.dtos.MediaDTO;
-import br.com.naveguard.naveguardBackend.dtos.TutorialDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,12 +31,8 @@ public class Media {
     private Set<Tutorial> tutorials = new HashSet<>();
 
 	public Media(MediaDTO dto) {
-		id = dto.id();
-		url = dto.url();
-		for(TutorialDTO item : dto.tutorials()) {
-			tutorials.add(new Tutorial(item));
-		}
-		
+		id = dto.getId();
+		url = dto.getUrl();
 	}
     
     
