@@ -46,7 +46,8 @@ public class ArticleService {
 
 	@Transactional
 	public ArticleDTOResponse insert(ArticleDTO dto) {
-		Article entity = new Article(dto);
+		User user = userRepository.findById(dto.authorId()).orElseThrow(() -> new ResourceNotFoundException("Usuário não existe!"));
+		Article entity = new Article(dto, user);
 		entity.setId(null);
 		entity = repository.save(entity);
 		ArticleDTOResponse dtoResponse = new ArticleDTOResponse(entity.getId(), entity.getTitle(),

@@ -2,6 +2,8 @@ package br.com.naveguard.naveguardBackend.models;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import br.com.naveguard.naveguardBackend.dtos.RoleDTO;
 import br.com.naveguard.naveguardBackend.dtos.UserMinDTO;
 import jakarta.persistence.Entity;
@@ -19,7 +21,7 @@ import lombok.Setter;
 @Entity(name = "tb_role")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Role {
+public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,5 +36,10 @@ public class Role {
     	for(UserMinDTO item : dto.users()) {
     		users.add(new User(item));
     	}
+    }
+    
+    public Role(Long id, String authority) {
+    	this.id = id;
+    	this.authority = authority;
     }
 }

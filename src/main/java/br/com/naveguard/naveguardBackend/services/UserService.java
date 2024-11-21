@@ -4,20 +4,27 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+
+
 import br.com.naveguard.naveguardBackend.dtos.UserDTO;
 import br.com.naveguard.naveguardBackend.dtos.UserMinDTO;
+import br.com.naveguard.naveguardBackend.models.Role;
 import br.com.naveguard.naveguardBackend.models.User;
+import br.com.naveguard.naveguardBackend.projections.UserDetailsProjection;
 import br.com.naveguard.naveguardBackend.repositories.UserRepository;
 import br.com.naveguard.naveguardBackend.services.exceptions.DatabaseException;
 import br.com.naveguard.naveguardBackend.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 	@Autowired
 	private UserRepository repository;
 
@@ -85,5 +92,23 @@ public class UserService {
 		entity.setGender(dto.gender());
 		entity.setBio(dto.bio());
 		return entity;
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		List<UserDetailsProjection> result = repository.searchUserAndRolesByEmail(username);
+		if(result.size() == 0) {
+			throw new UsernameNotFoundException("User not found");
+		}
+		
+		User user = new User();
+		user.setEmail(username);
+		user.setPassword(result.get(0).getPassword());
+		
+		for(UserDetailsProjection p : result) {
+			user.addRoles(new Role(p.getRoleId(), p.getAuthority()));
+		}
+		
+		return user;
 	}
 }
