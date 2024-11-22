@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -33,6 +34,14 @@ public class UserController {
     public ResponseEntity<UserMinDTO> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
+    
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
+	@GetMapping(value = "/me")
+	public ResponseEntity<UserMinDTO> findMe() { 
+		UserMinDTO user = service.findMe();
+		
+		return ResponseEntity.ok().body(user);
+	}
 
     @PostMapping
     @Operation(summary = "Inserir", description = "Insere um usuário.")

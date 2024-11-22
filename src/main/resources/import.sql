@@ -4,9 +4,9 @@ INSERT INTO tb_city(name, state_id) VALUES('Recife', 1);
 INSERT INTO tb_city(name, state_id) VALUES('Jaboatão dos Guararapes', 1);
 INSERT INTO tb_city(name, state_id) VALUES('Olinda', 1);
 
-INSERT INTO tb_user(name, email, password, phone, birth_day, url_photo, gender, bio, state_id) VALUES ('Ana Clara', 'ana.clara@example.com', '123456', '81987654321', '1998-05-15', 'https://example.com/photos/ana.jpg', 'FEMALE', 'Apaixonada por tecnologia e viagens.', 1);
-INSERT INTO tb_user(name, email, password, phone, birth_day, url_photo, gender, bio, state_id) VALUES ('Carlos Eduardo', 'carlos.edu@example.com', '123456', '81999887766', '1995-11-20', 'https://example.com/photos/carlos.jpg', 'MALE', 'Engenheiro de software com interesse em IA e startups.', 1);
-INSERT INTO tb_user(name, email, password, phone, birth_day, url_photo, gender, bio, state_id) VALUES ('Mariana Souza', 'mariana.souza@example.com', '123456', '81991234567', '2000-07-08', 'https://example.com/photos/mariana.jpg', 'FEMALE', 'Designer apaixonada por criar experiências visuais incríveis.', 1);
+INSERT INTO tb_user(name, email, password, phone, birth_day, url_photo, gender, bio, state_id) VALUES ('Ana Clara', 'ana.clara@example.com', '$2a$10$eACCYoNOHEqXve8aIWT8Nu3PkMXWBaOxJ9aORUYzfMQCbVBIhZ8tG', '81987654321', '1998-05-15', 'https://example.com/photos/ana.jpg', 'FEMALE', 'Apaixonada por tecnologia e viagens.', 1);
+INSERT INTO tb_user(name, email, password, phone, birth_day, url_photo, gender, bio, state_id) VALUES ('Carlos Eduardo', 'carlos.edu@example.com', '$2a$10$eACCYoNOHEqXve8aIWT8Nu3PkMXWBaOxJ9aORUYzfMQCbVBIhZ8tG', '81999887766', '1995-11-20', 'https://example.com/photos/carlos.jpg', 'MALE', 'Engenheiro de software com interesse em IA e startups.', 1);
+INSERT INTO tb_user(name, email, password, phone, birth_day, url_photo, gender, bio, state_id) VALUES ('Mariana Souza', 'mariana.souza@example.com', '$2a$10$eACCYoNOHEqXve8aIWT8Nu3PkMXWBaOxJ9aORUYzfMQCbVBIhZ8tG', '81991234567', '2000-07-08', 'https://example.com/photos/mariana.jpg', 'FEMALE', 'Designer apaixonada por criar experiências visuais incríveis.', 1);
 
 INSERT INTO tb_role(authority) VALUES ('ROLE_CLIENT');
 INSERT INTO tb_role(authority) VALUES ('ADMIN_CLIENT');
