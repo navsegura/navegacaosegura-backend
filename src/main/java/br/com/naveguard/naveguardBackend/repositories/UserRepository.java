@@ -1,17 +1,15 @@
 package br.com.naveguard.naveguardBackend.repositories;
 
-import br.com.naveguard.naveguardBackend.models.User;
-import br.com.naveguard.naveguardBackend.projections.UserDetailsProjection;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-
-import java.util.List;
-import java.util.Optional;
+import br.com.naveguard.naveguardBackend.models.User;
+import br.com.naveguard.naveguardBackend.projections.UserDetailsProjection;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByEmail(String email);
+    User findByEmail(String email);
     
     @Query(nativeQuery = true, value = """
 			SELECT tb_user.email AS username, tb_user.password, tb_role.id AS roleId, tb_role.authority

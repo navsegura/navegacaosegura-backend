@@ -27,6 +27,9 @@ import jakarta.persistence.EntityNotFoundException;
 public class UserService implements UserDetailsService {
 	@Autowired
 	private UserRepository repository;
+	
+	@Autowired
+	private AuthService authService;
 
 	@Transactional(readOnly = true)
 	public UserMinDTO findById(Long id) {
@@ -42,6 +45,12 @@ public class UserService implements UserDetailsService {
 				.map(u -> new UserMinDTO(u))
 				.toList();
 		return allUserListDTO;
+	}
+	
+	@Transactional(readOnly = true)
+	public UserMinDTO findMe() {
+		User user = authService.authenticated();
+		return new UserMinDTO(user);
 	}
 
 	@Transactional

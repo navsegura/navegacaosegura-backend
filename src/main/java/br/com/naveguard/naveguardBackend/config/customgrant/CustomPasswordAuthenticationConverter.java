@@ -20,7 +20,6 @@ import org.springframework.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 
 public class CustomPasswordAuthenticationConverter implements AuthenticationConverter {
-
 	@Nullable
 	@Override
 	public Authentication convert(HttpServletRequest request) {
