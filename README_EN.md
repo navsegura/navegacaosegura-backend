@@ -1,5 +1,5 @@
 # NaveGuard - Back End
-[![Readme in English](https://img.shields.io/badge/README-English-green)](./README_EN.md)
+[![Readme in Potuguese](https://img.shields.io/badge/README-Portuguese-green)](./README.md)
 
 ## ⚙ Funcionalidades
 O desenvolvimento da API NaveGuard foi dividido em quatro APIs principais, cada uma responsável por uma área específica da aplicação. Todas as APIs seguem o padrão de operações CRUD (Create, Read, Update, Delete), permitindo o gerenciamento completo dos dados relacionados.
