@@ -31,6 +31,7 @@ public class TutorialController {
     @Autowired
     TutorialService service;
 
+    @PreAuthorize("hasAnyRole('ROLE_CLIENT', 'ROLE_ADMIN')")
     @GetMapping
     @Operation(summary = "Listar", description = "Lista todos os tutoriais registrados.")
     public ResponseEntity<List<TutorialDTO>> getTutorials() {
@@ -45,7 +46,8 @@ public class TutorialController {
         var tutorial = service.findById(id);
         return ResponseEntity.ok(tutorial);
     }
-
+    
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping
     @Operation(summary = "Inserir", description = "Insere um tutorial.")
     public ResponseEntity<TutorialDTO> insertTutorial(@RequestBody @Valid TutorialInsertDTO dto) {
@@ -54,7 +56,8 @@ public class TutorialController {
                 .buildAndExpand(result.getId()).toUri();
         return ResponseEntity.created(uri).body(result);
     }
-
+    
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     @Operation(summary = "Editar", description = "Edita tutorial com id especificado.")
     public ResponseEntity<TutorialDTO> updateTutorial(@PathVariable Long id, @Valid @RequestBody TutorialInsertDTO dto) {
@@ -62,6 +65,7 @@ public class TutorialController {
         return ResponseEntity.ok(tutorial);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     @Operation(summary = "Excluir", description = "Exclui tutorial com id especificado.")
     public ResponseEntity<Void> deleteTutorial(@PathVariable Long id) {

@@ -7,17 +7,17 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-
 
 import br.com.naveguard.naveguardBackend.dtos.UserDTO;
 import br.com.naveguard.naveguardBackend.dtos.UserMinDTO;
 import br.com.naveguard.naveguardBackend.models.Role;
 import br.com.naveguard.naveguardBackend.models.User;
 import br.com.naveguard.naveguardBackend.projections.UserDetailsProjection;
+import br.com.naveguard.naveguardBackend.repositories.RoleRepository;
 import br.com.naveguard.naveguardBackend.repositories.UserRepository;
 import br.com.naveguard.naveguardBackend.services.exceptions.DatabaseException;
 import br.com.naveguard.naveguardBackend.services.exceptions.ResourceNotFoundException;
@@ -30,6 +30,12 @@ public class UserService implements UserDetailsService {
 	
 	@Autowired
 	private AuthService authService;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEnconder;
+	
+	@Autowired
+	private RoleRepository roleRepository;
 
 	@Transactional(readOnly = true)
 	public UserMinDTO findById(Long id) {
@@ -57,6 +63,10 @@ public class UserService implements UserDetailsService {
 	public UserMinDTO insert(UserDTO dto) {
 		User entity = new User(dto);
 		entity.setId(null);
+		entity.setPassword(passwordEnconder.encode(dto.password()));
+		entity.getRoles().clear();
+		Role role = roleRepository.findByAuthority("ROLE_OPERATOR");
+		entity.getRoles().add(role);
 		entity = repository.save(entity);
 		return new UserMinDTO(entity);
 	}

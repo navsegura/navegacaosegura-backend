@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ public class CityController {
     @Autowired
     CityService service;
 
+    @PreAuthorize("hasAnyRole('ROLE_CLIENT', 'ROLE_ADMIN')")
     @GetMapping
     @Operation(summary = "Listar", description = "Lista todos as cidades registradas.")
     public ResponseEntity<List<CityDTO>> getCity() {
@@ -35,6 +37,7 @@ public class CityController {
         return ResponseEntity.ok(result);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_CLIENT', 'ROLE_ADMIN')")
     @GetMapping("/{id}")
     @Operation(summary = "Detalhar", description = "Retorna cidade com id especificado.")
     public ResponseEntity<CityDTO> getMediaById(@PathVariable Long id) {
@@ -42,6 +45,7 @@ public class CityController {
         return ResponseEntity.ok(city);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping
     @Operation(summary = "Inserir", description = "Insere uma cidade.")
     public ResponseEntity<CityDTO> insertCity(@RequestBody @Valid CityDTO cityDto) {
@@ -51,13 +55,15 @@ public class CityController {
         return ResponseEntity.created(uri).body(cityDto);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     @Operation(summary = "Editar", description = "Edita cidade com id especificado.")
     public ResponseEntity<CityDTO> updateCity(@PathVariable Long id, @Valid @RequestBody CityDTO dto) {
         var city = service.update(id,dto);
         return ResponseEntity.ok(city);
     }
-
+    
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     @Operation(summary = "Excluir", description = "Exclui cidade com id especificado.")
     public ResponseEntity<Void> deleteCity(@PathVariable Long id) {

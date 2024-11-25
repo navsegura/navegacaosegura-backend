@@ -23,12 +23,14 @@ public class UserController {
     @Autowired
     private UserService service;
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping
     @Operation(summary = "Listar", description = "Lista todos os usuários registrados.")
     public ResponseEntity<List<UserMinDTO>> getAllUsers() {
         return ResponseEntity.ok(service.findAll());
     }
-
+    
+    @PreAuthorize("hasAnyRole('ROLE_CLIENT', 'ROLE_ADMIN')")
     @GetMapping("/{id}")
     @Operation(summary = "Detalhar", description = "Retorna usuário com id especificado.")
     public ResponseEntity<UserMinDTO> getUserById(@PathVariable Long id) {
@@ -43,6 +45,7 @@ public class UserController {
 		return ResponseEntity.ok().body(user);
 	}
 
+    
     @PostMapping
     @Operation(summary = "Inserir", description = "Insere um usuário.")
     public ResponseEntity<UserMinDTO> createUser(@RequestBody @Valid UserDTO user) {
@@ -52,6 +55,7 @@ public class UserController {
         return ResponseEntity.created(uri).body(userCreated);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_CLIENT', 'ROLE_ADMIN')")
     @PutMapping("/{id}")
     @Operation(summary = "Editar", description = "Edita usuário com id especificado.")
     public ResponseEntity<UserMinDTO> updateUser(@PathVariable Long id, @RequestBody @Valid UserDTO user) {
@@ -59,6 +63,7 @@ public class UserController {
         return ResponseEntity.ok(userUpdated);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     @Operation(summary = "Excluir", description = "Exclui usuário com id especificado.")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {

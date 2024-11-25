@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,8 @@ import jakarta.validation.Valid;
 public class MediaController {
     @Autowired
     MediaService service;
-
+    
+    @PreAuthorize("hasAnyRole('ROLE_CLIENT', 'ROLE_ADMIN')")
     @GetMapping
     @Operation(summary = "Listar", description = "Lista todos as mídias registrados.")
     public ResponseEntity<List<MediaDTO>> getMedia() {
@@ -36,6 +38,7 @@ public class MediaController {
         return ResponseEntity.ok(result);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_CLIENT', 'ROLE_ADMIN')")
     @GetMapping("/{id}")
     @Operation(summary = "Detalhar", description = "Retorna mídia com id especificado.")
     public ResponseEntity<MediaDTO> getMediaById(@PathVariable Long id) {
@@ -43,6 +46,7 @@ public class MediaController {
         return ResponseEntity.ok(media);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping
     @Operation(summary = "Inserir", description = "Insere uma mídia.")
     public ResponseEntity<MediaDTO> insertMedia(@RequestBody @Valid MediaDTO dto) {
@@ -52,6 +56,7 @@ public class MediaController {
         return ResponseEntity.created(uri).body(dto);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     @Operation(summary = "Editar", description = "Edita mídia com id especificado.")
     public ResponseEntity<MediaDTO> updateMedia(@PathVariable Long id, @Valid @RequestBody MediaDTO dto) {
@@ -59,6 +64,7 @@ public class MediaController {
         return ResponseEntity.ok(media);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     @Operation(summary = "Excluir", description = "Exclui mídia com id especificado.")
     public ResponseEntity<Void> deleteMedia(@PathVariable Long id) {

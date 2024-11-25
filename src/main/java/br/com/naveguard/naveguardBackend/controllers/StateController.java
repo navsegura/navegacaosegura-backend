@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ public class StateController {
     @Autowired
     StateService service;
 
+    @PreAuthorize("hasAnyRole('ROLE_CLIENT', 'ROLE_ADMIN')")
     @GetMapping
     @Operation(summary = "Listar", description = "Lista todos os estados geográficos registrados.")
     public ResponseEntity<List<StateDTO>> getState() {
@@ -36,6 +38,7 @@ public class StateController {
         return ResponseEntity.ok(result);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_CLIENT', 'ROLE_ADMIN')")
     @GetMapping("/{id}")
     @Operation(summary = "Detalhar", description = "Retorna tutorial com id especificado.")
     public ResponseEntity<StateDTO> getStateById(@PathVariable long id) {
@@ -43,6 +46,7 @@ public class StateController {
         return ResponseEntity.ok(state);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping
     @Operation(summary = "Inserir", description = "Insere um estado.")
     public ResponseEntity<StateDTO> insertState(@RequestBody @Valid StateDTO stateDto) {
@@ -52,13 +56,15 @@ public class StateController {
         return ResponseEntity.created(uri).body(stateDto);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     @Operation(summary = "Editar", description = "Edita estado com id especificado.")
     public ResponseEntity<StateDTO> updateState(@PathVariable long id, @Valid @RequestBody StateDTO dto) {
         var state = service.update(id, dto);
         return ResponseEntity.ok(state);
     }
-
+    
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     @Operation(summary = "Excluir", description = "Exclui estado com id especificado.")
     public ResponseEntity<Void> deleteState(@PathVariable long id) {
