@@ -39,7 +39,7 @@ public class ArticleController {
         return ResponseEntity.ok().body(article);
     }
     
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping
     @Operation(summary = "Inserir", description = "Insere um artigo.")
     public ResponseEntity<ArticleDTOResponse> newArticle(@Valid @RequestBody ArticleDTO dto) {
@@ -49,7 +49,7 @@ public class ArticleController {
         return ResponseEntity.created(uri).body(article);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     @Operation(summary = "Editar", description = "Edita artigo com id especificado.")
     public ResponseEntity<ArticleDTOResponse> updateArticle(@PathVariable Long id, @Valid @RequestBody ArticleDTO dto) {
@@ -57,7 +57,7 @@ public class ArticleController {
         return ResponseEntity.ok().body(article);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     @Operation(summary = "Excluir", description = "Exclui artigo com id especificado.")
     public ResponseEntity<Void> deleteArticleById(@PathVariable Long id) {
