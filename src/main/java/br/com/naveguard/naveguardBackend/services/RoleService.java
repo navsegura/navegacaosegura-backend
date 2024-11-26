@@ -1,14 +1,15 @@
 package br.com.naveguard.naveguardBackend.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.naveguard.naveguardBackend.dtos.RoleDTO;
+import br.com.naveguard.naveguardBackend.dtos.RoleMinDTO;
 import br.com.naveguard.naveguardBackend.models.Role;
 import br.com.naveguard.naveguardBackend.repositories.RoleRepository;
 import br.com.naveguard.naveguardBackend.services.exceptions.DatabaseException;
@@ -21,17 +22,27 @@ public class RoleService {
 	private RoleRepository repository;
 
 	@Transactional(readOnly = true)
-	public RoleDTO findById(Long id) {
+	public RoleMinDTO findById(Long id) {
 		Role entity = repository.findById(id).orElseThrow(
 				() -> new ResourceNotFoundException("Recurso não encontrado"));
-		return new RoleDTO(entity);
+		return new RoleMinDTO(entity);
+	}
+	
+	@Transactional(readOnly = true)
+	public List<RoleMinDTO> findAll() {
+		List<Role> entity = repository.findAll();
+		return entity.stream().map(x -> new RoleMinDTO(x)).toList();
+	}
+	
+	@Transactional(readOnly = true)
+	public RoleMinDTO findByName(String name) {
+		Role entity = repository.findByAuthority(name);
+		if(entity == null) {
+			throw new ResourceNotFoundException("Authority não encontrado");
+		}
+		return new RoleMinDTO(entity);
 	}
 
-	@Transactional(readOnly = true)
-	public Page<RoleDTO> findAllPaged(Pageable pageable) {
-		Page<Role> entity = repository.findAll(pageable);
-		return entity.map(x -> new RoleDTO(x));
-	}
 
 	@Transactional
 	public RoleDTO insert(RoleDTO dto) {

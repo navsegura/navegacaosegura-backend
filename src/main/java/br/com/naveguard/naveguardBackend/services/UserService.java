@@ -14,10 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.naveguard.naveguardBackend.dtos.UserDTO;
 import br.com.naveguard.naveguardBackend.dtos.UserMinDTO;
+import br.com.naveguard.naveguardBackend.models.City;
 import br.com.naveguard.naveguardBackend.models.Role;
+import br.com.naveguard.naveguardBackend.models.State;
 import br.com.naveguard.naveguardBackend.models.User;
 import br.com.naveguard.naveguardBackend.projections.UserDetailsProjection;
+import br.com.naveguard.naveguardBackend.repositories.CityRepository;
 import br.com.naveguard.naveguardBackend.repositories.RoleRepository;
+import br.com.naveguard.naveguardBackend.repositories.StateRepository;
 import br.com.naveguard.naveguardBackend.repositories.UserRepository;
 import br.com.naveguard.naveguardBackend.services.exceptions.DatabaseException;
 import br.com.naveguard.naveguardBackend.services.exceptions.ResourceNotFoundException;
@@ -36,6 +40,12 @@ public class UserService implements UserDetailsService {
 	
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired
+	private CityRepository cityRepository;
+	
+	@Autowired
+	private StateRepository stateRepository;
 
 	@Transactional(readOnly = true)
 	public UserMinDTO findById(Long id) {
@@ -65,11 +75,22 @@ public class UserService implements UserDetailsService {
 		entity.setId(null);
 		entity.setPassword(passwordEnconder.encode(dto.password()));
 		entity.getRoles().clear();
+		
 		Role role = roleRepository.findByAuthority("ROLE_CLIENT");
 		if(role == null) {
 			throw new ResourceNotFoundException("Authority não encontrado");
 		}
 		entity.getRoles().add(role);
+		
+		City city = cityRepository.findByName(dto.city());
+		State state = stateRepository.findByName(dto.state());
+		
+		if(city == null || state == null) {
+			throw new ResourceNotFoundException("Nome de cidade ou estado não existe");
+		}
+		
+		entity.setCity(city);
+		entity.setState(state);
 		entity = repository.save(entity);
 		return new UserMinDTO(entity);
 	}
@@ -86,7 +107,6 @@ public class UserService implements UserDetailsService {
 			
 		}
 		
-
 	}
 	
 	

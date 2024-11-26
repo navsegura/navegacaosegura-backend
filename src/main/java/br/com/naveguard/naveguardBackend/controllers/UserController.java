@@ -55,8 +55,9 @@ public class UserController {
         return ResponseEntity.created(uri).body(userCreated);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_CLIENT', 'ROLE_ADMIN')")
+    
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
     @Operation(summary = "Editar", description = "Edita usuário com id especificado.")
     public ResponseEntity<UserMinDTO> updateUser(@PathVariable Long id, @RequestBody @Valid UserDTO user) {
         UserMinDTO userUpdated = service.update(id, user);
