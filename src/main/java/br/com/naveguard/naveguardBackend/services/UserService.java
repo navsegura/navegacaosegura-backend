@@ -74,7 +74,10 @@ public class UserService implements UserDetailsService {
 		entity.setId(null);
 		entity.setPassword(passwordEnconder.encode(dto.password()));
 		entity.getRoles().clear();
-		Role role = roleRepository.findByAuthority("ROLE_OPERATOR");
+		Role role = roleRepository.findByAuthority("ROLE_CLIENT");
+		if(role == null) {
+			throw new ResourceNotFoundException("Authority não encontrado");
+		}
 		entity.getRoles().add(role);
 		entity = repository.save(entity);
 		City city = cityRepository.findByName(dto.city());
