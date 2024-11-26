@@ -24,6 +24,8 @@ public record UserDTO(
         String urlPhoto,
         Gender gender,
         @Size(max = 200, message = "O tamanho da bio deve ter no máximo 200 caracteres")
-        String bio
+        String bio,
+        String state,
+        String city
 ) {
 }
