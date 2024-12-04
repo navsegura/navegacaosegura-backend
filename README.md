@@ -61,10 +61,6 @@ Para clonar e rodar este projeto, siga os passos abaixo:
      cd front-end/naveguardFront/src
      npm install
      ```
-     ```bash
-     cd back-end/naveguard
-     npm install
-     ```
 
 3. **Execute o front-end**:
    - Após instalar as dependências, execute o comando abaixo para rodar o front-end:
@@ -73,9 +69,9 @@ Para clonar e rodar este projeto, siga os passos abaixo:
      ```
 
 4. **Execute o back-end**:
-   - Em outra aba do terminal, acesse a pasta do back-end e rode o servidor:
+   - Após executar o front, acesse a pasta do back-end e rode o servidor:
      ```bash
-     npm run dev
+     mvn spring-boot:run
      ```
 
 ## 🧪 Testes
@@ -108,7 +104,7 @@ Uma melhoria significativa para o futuro desenvolvimento do projeto seria a impl
 | ![Heverton Vitor][img1] | ![Jamyle Elen][img2] | ![Antônio de Pádua][img3] | ![Guilherme Davino][img4] | ![Jonas Rafael][img5] | ![Rodrigo Silva][img6] | ![Theofilo Henrique][img7] | ![Leandra Mayla][img8] |
 |:-----------------------:|:--------------------:|:-------------------------:|:-------------------------:|:---------------------:|:----------------------:|:--------------------------:|:----------------------:|
 | **Heverton Victor**     | **Jamyle Elen**      | **Antônio de Pádua**      | **Guilherme Davino**      | **Jonas Rafael**      | **Rodrigo Silva**      | **Theofilo Henrique**      | **Leandra Mayla**      |
-| **PO**                  | **Scrum Master**     | **Função**                | **Função**                | **Função**            | **Função**             | **Função**                 | **Social Media**       |
+| **PO, Desenvolvedor Front-End e UI/UX**                  | **Scrum Master, Desenvolvedora Front-End e UI/UX**     | **Desenvolvedor Full-Stack**                | **Desenvolvedor Back-End**                | **Desenvolvedor Front-End e Financeiro**            | **Desenvolvedor Back-End e UI/UX**             | **Desenvolvedor Back-End e Sound Designer**                 | **Social Media, Desenvolvedora Front-End e UI/UX**       |
 
 [img1]: https://github.com/user-attachments/assets/4f7785c6-6bf1-4df3-bffe-952bd125e7b0
 [img2]: https://github.com/user-attachments/assets/4b3637cc-e1a0-45e4-af1b-6b37f3626ecb
