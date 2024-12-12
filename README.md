@@ -39,8 +39,8 @@ O site terá uma página dedicada a fornecer informações sobre Tutoriais, Guia
 | PUT    | /api/tutorial/{id}                  | Atualiza tutoriais por id                              |
 | DELETE | /api/tutorial/{id}                  | Deleta tutoriais via id                                |
 
-## 🚫 Deploy
-No momento ainda foi realizado o deploy da aplicação nesta versão. Portanto, para rodar o projeto localmente, é necessário baixar e executar **tanto o repositório do front-end quanto o do back-end**.
+## 🌐 Deploy
+No momento foi realizado o deploy da aplicação nesta versão. Portanto, pode-se rodar o projeto localmente, é necessário baixar e executar **tanto o repositório do front-end quanto o do back-end**.
 
 ### ▶ Como rodar o projeto (front-end e back-end)
 Para clonar e rodar este projeto, siga os passos abaixo:
@@ -78,21 +78,6 @@ Para clonar e rodar este projeto, siga os passos abaixo:
 Os testes podem ser feitos de duas formas:
 - Manualmente utilizando ferramentas como o [Postman](https://www.postman.com/downloads/) ou [Insomnia](https://insomnia.rest/download), para testar as funcionalidades das rotas listadas anteriormente.
 - Via deploy
-
-Segue abaixo imagem de alguns testes:
-<div align = "center"> 
-  <h3>Listar todos os tutoriais (get)</h3>
-  <img src = ""  width = "600px">
- 
-  <h3>Busca de tutorial por id (get)</h3>
-  <img src = "" width = "600px">
-
-<h3>Atualizar tutoriais por id (put)</h3>
-  <img src = "" width = "600px">
-  
-<h3>Cadastro de tutorial (post)</h3>
-  <img src = "" width = "600px">
-</div>
 
 ## 📅 Conclusão
 O "Naveguard" combina entretenimento e educação com um forte foco em jogos interativos. Essa abordagem gamificada, aliada a recursos que envolvem tanto pais quanto crianças, cria uma experiência única que é difícil de ser replicada por concorrentes. A plataforma não apenas educa, mas também entretém, garantindo maior adesão ao conteúdo.
